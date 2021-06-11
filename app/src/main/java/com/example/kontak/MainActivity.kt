@@ -40,7 +40,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showUpdateDialog(kontakEntity: KontakEntity) {
-        //
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog, null)
+        val builder = this.let {
+            AlertDialog.Builder(it)
+                .setView(dialogView)
+        }
+        val mDialog = builder?.show()
+        with(dialogView) {
+            hapusBtn.visibility = View.VISIBLE
+            savebtn.text = "Update"
+
+            namainput.setText(kontakEntity.nama)
+            nomorhpinput.setText(kontakEntity.nomorhp)
+            alamatinput.setText(kontakEntity.alamat)
+
+            savebtn.setOnClickListener {
+                val nama = namainput.text.toString()
+                val nomor = nomorhpinput.text.toString()
+                val alamat = alamatinput.text.toString()
+                if( nama != "" &&  nomor != "" &&  alamat != "") {
+                    viewmodel.updateKontak(
+                        KontakEntity(
+                            kontakEntity.id, nama, nomor, alamat
+                        )
+                    )
+                    mDialog?.dismiss()
+                    Toast.makeText(this@MainActivity, "Kontak Berhasil Diubah", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@MainActivity, "Harap Mengisi Semua Kolom", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            hapusBtn.setOnClickListener {
+                
+            }
+        }
     }
 
     private fun showAddDialog() {
