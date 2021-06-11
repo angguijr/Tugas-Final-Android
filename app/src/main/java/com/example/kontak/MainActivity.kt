@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kontak.User.KontakEntity
 import com.example.kontak.User.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,10 +23,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         viewmodel = ViewModelProvider(this).get(UserViewModel::class.java)
 
+        recyclerview.setHasFixedSize(true)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+
+        viewmodel.getKontaks()?.observe(this, Observer {
+            recyclerview.adapter = Adapter(it, object: Adapter.Listener {
+                override fun onClick(kontakEntity: KontakEntity) {
+                    showUpdateDialog(kontakEntity)
+                }
+            })
+        })
 
         addBtn.setOnClickListener {
             showAddDialog()
         }
+    }
+
+    private fun showUpdateDialog(kontakEntity: KontakEntity) {
+        //
     }
 
     private fun showAddDialog() {
