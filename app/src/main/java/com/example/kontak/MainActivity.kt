@@ -72,7 +72,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             hapusBtn.setOnClickListener {
-                
+                viewmodel.deleteKontak(kontakEntity)
+                mDialog?.dismiss()
+                Toast.makeText(this@MainActivity, "Kontak Berhasil dihapus", Toast.LENGTH_SHORT).show()
             }
         }
     }
